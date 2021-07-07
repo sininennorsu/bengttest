@@ -131,6 +131,24 @@
             width: 81%;
             margin: auto;
         }
+
+        @media only screen and (max-width: 780px) {
+            .test>span {
+                font-size: 72px;
+                padding: 10px;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .test>span {
+                font-size: 36px;
+                padding: 10px;
+            }
+
+            .btn-group button {
+                padding:5px 15px; 
+            }    
+        }
     </style>
 </head>
 
@@ -141,9 +159,9 @@
         listan.</p>
 
     <!-- <form> -->
-        <div class="form">
+    <div class="form">
 
-        
+
         <div>
             <button onclick="speak(document.getElementById('exempeltext').value)"><i
                     class="fas fa-bullhorn"></i></button>
@@ -236,7 +254,7 @@
 
         function populateNumbers() {
             populateraknesatt = numeracy === 4 ? getRandomIntInclusive(0, 3) : numeracy
-            currentnumeracy=populateraknesatt
+            currentnumeracy = populateraknesatt
             switch (populateraknesatt) {
                 case 0:
                     tal1 = getRandomIntInclusive(2, 80)
@@ -309,42 +327,42 @@
 
         function setSound(onoff) {
             sound = onoff;
-            let soundid = onoff ? 'lt':'lf'
-            setActive(soundid,'ljud')
+            let soundid = onoff ? 'lt' : 'lf'
+            setActive(soundid, 'ljud')
         }
 
         function starttest() {
             fraga = 0
             populateTimeoutQuestionAnswer()
-            setActive('start','startstop')
+            setActive('start', 'startstop')
         }
-        
-        function populateOneTimeoutQuestionAnswer(){
+
+        function populateOneTimeoutQuestionAnswer() {
             fraga = fraga + 1
-            
+
             document.getElementById('fraga').innerHTML = `Fråga ${fraga}:`
-            visasvarefter = (document.getElementById('sekunder').value - 4)*1000
+            visasvarefter = (document.getElementById('sekunder').value - 4) * 1000
             populateNumbers()
-            setTimeout(showAnswer,visasvarefter)
+            setTimeout(showAnswer, visasvarefter)
         }
-        
-        function populateTimeoutQuestionAnswer(){
+
+        function populateTimeoutQuestionAnswer() {
             populateOneTimeoutQuestionAnswer()
-            intervallmillisekunder = document.getElementById('sekunder').value *1000
-            startInterval= setInterval(populateOneTimeoutQuestionAnswer,intervallmillisekunder)
+            intervallmillisekunder = document.getElementById('sekunder').value * 1000
+            startInterval = setInterval(populateOneTimeoutQuestionAnswer, intervallmillisekunder)
         }
 
         function stop() {
             clearInterval(startInterval)
             startInterval = null
-            setActive('stopp','startstop')
+            setActive('stopp', 'startstop')
         }
 
         function chooseNumeracy(choosennumeracy) {
             numeracy = choosennumeracy
             populateNumbers()
-            let numeracyid = 'n'+choosennumeracy
-            setActive(numeracyid,'raknesatt')
+            let numeracyid = 'n' + choosennumeracy
+            setActive(numeracyid, 'raknesatt')
         }
 
         function populateVoiceList() {
@@ -365,9 +383,9 @@
                 voiceSelect.appendChild(option);
             }
             if (voices.length > 0) {
-                if(selectedVoiceIndex){
+                if (selectedVoiceIndex) {
                     voiceSelect.selectedIndex = selectedVoiceIndex
-                }else{
+                } else {
                     var selectedIndex = !voiceselected ? svensktIndex > 0 ? svensktIndex : voiceSelect.selectedIndex < 0 ? 0 : voiceSelect.selectedIndex : voiceSelect.selectedIndex;
                     selectedVoice = voices[selectedIndex]
                     voiceSelect.selectedIndex = selectedIndex;
@@ -407,7 +425,7 @@
             }
         }
 
-        function setActive (activebutton, typ){
+        function setActive(activebutton, typ) {
             // n0-n4 räknesätt, lt-lf (ljud true, ljud false), start-stopp
             switch (typ) {
                 case "raknesatt":
@@ -415,19 +433,19 @@
                     document.getElementById('n1').classList.remove('active');
                     document.getElementById('n2').classList.remove('active');
                     document.getElementById('n3').classList.remove('active');
-                    document.getElementById('n4').classList.remove('active');                 
+                    document.getElementById('n4').classList.remove('active');
                     document.getElementById(activebutton).classList.add('active');
                     break;
                 case "ljud":
                     document.getElementById('lt').classList.remove('active');
-                    document.getElementById('lf').classList.remove('active');                    
+                    document.getElementById('lf').classList.remove('active');
                     document.getElementById(activebutton).classList.add('active');
-                    break; 
+                    break;
                 case "startstop":
                     document.getElementById('start').classList.remove('active');
-                    document.getElementById('stopp').classList.remove('active');                    
+                    document.getElementById('stopp').classList.remove('active');
                     document.getElementById(activebutton).classList.add('active');
-                    break;       
+                    break;
             }
 
         }
@@ -435,79 +453,79 @@
         function getWordInLanguage(typeofword) {
             //typeofword = raknesatt, likamed
             sprak = {
-                "sv":{
-                    "raknesatt":{
-                        0:"plus",
-                        1:"minus",
-                        2:"gånger",
-                        3:"delat med"
+                "sv": {
+                    "raknesatt": {
+                        0: "plus",
+                        1: "minus",
+                        2: "gånger",
+                        3: "delat med"
                     },
-                    "likamed":"är"
+                    "likamed": "är"
                 },
-                "de":{
-                    "raknesatt":{
-                        0:"plus",
-                        1:"minus",
-                        2:"mal",
-                        3:"geteilt durch"
+                "de": {
+                    "raknesatt": {
+                        0: "plus",
+                        1: "minus",
+                        2: "mal",
+                        3: "geteilt durch"
                     },
-                    "likamed":"entspricht"
+                    "likamed": "entspricht"
                 },
-                "en":{
-                    "raknesatt":{
-                        0:"plus",
-                        1:"minus",
-                        2:"times",
-                        3:"devided with"
+                "en": {
+                    "raknesatt": {
+                        0: "plus",
+                        1: "minus",
+                        2: "times",
+                        3: "devided with"
                     },
-                    "likamed":"equals"
+                    "likamed": "equals"
                 },
-                "es":{
-                    "raknesatt":{
-                        0:"más",
-                        1:"menos",
-                        2:"por",
-                        3:"divididos"
+                "es": {
+                    "raknesatt": {
+                        0: "más",
+                        1: "menos",
+                        2: "por",
+                        3: "divididos"
                     },
-                    "likamed":"es igual a"
+                    "likamed": "es igual a"
                 },
-                "fr":{
-                    "raknesatt":{
-                        0:"plus",
-                        1:"moins",
-                        2:"fois",
-                        3:"divisés par"
+                "fr": {
+                    "raknesatt": {
+                        0: "plus",
+                        1: "moins",
+                        2: "fois",
+                        3: "divisés par"
                     },
-                    "likamed":"égale"
+                    "likamed": "égale"
                 },
-                "it":{
-                    "raknesatt":{
-                        0:"più",
-                        1:"moins",
-                        2:"per",
-                        3:"deviato con"
+                "it": {
+                    "raknesatt": {
+                        0: "più",
+                        1: "moins",
+                        2: "per",
+                        3: "deviato con"
                     },
-                    "likamed":"è uguale a"
+                    "likamed": "è uguale a"
                 },
-                "nl":{
-                    "raknesatt":{
-                        0:"plus",
-                        1:"min",
-                        2:"keer",
-                        3:"gedeeld door"
+                "nl": {
+                    "raknesatt": {
+                        0: "plus",
+                        1: "min",
+                        2: "keer",
+                        3: "gedeeld door"
                     },
-                    "likamed":"is gelijk aan"
+                    "likamed": "is gelijk aan"
                 },
-                "pl":{
-                    "raknesatt":{
-                        0:"plus",
-                        1:"minus",
-                        2:"razy",
-                        3:"podzielony przez"
+                "pl": {
+                    "raknesatt": {
+                        0: "plus",
+                        1: "minus",
+                        2: "razy",
+                        3: "podzielony przez"
                     },
-                    "likamed":"równa się"
+                    "likamed": "równa się"
                 }
-            
+
             }
             returnlang = sprak[lang] ? lang : "en"
             return typeofword === "raknesatt" ? sprak[returnlang][typeofword][currentnumeracy] : sprak[returnlang][typeofword]
@@ -526,11 +544,11 @@
         rate.onchange = function () { rateValue.textContent = rate.value; }
 
         voiceSelect.onchange = function () {
-             voiceselected = true; 
-             selectedVoice = voices[voiceSelect.selectedIndex]
-             selectedVoiceIndex = voiceSelect.selectedIndex
-             lang = voiceSelect[voiceSelect.selectedIndex].getAttribute('data-lang').substring(0,2)
-            }
+            voiceselected = true;
+            selectedVoice = voices[voiceSelect.selectedIndex]
+            selectedVoiceIndex = voiceSelect.selectedIndex
+            lang = voiceSelect[voiceSelect.selectedIndex].getAttribute('data-lang').substring(0, 2)
+        }
 
 
     </script>
