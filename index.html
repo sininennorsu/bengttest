@@ -44,6 +44,11 @@
             width: 73%;
         }
 
+        #settingsbutton {
+            float:right;
+            margin-right: 10px;
+        }
+
         select {
             width: 83%;
         }
@@ -146,41 +151,43 @@
             }
 
             .btn-group button {
-                padding:7px 20px; 
-            }    
+                padding: 7px 20px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <h1>Bengts multiplikationstest</h1>
-
-    <p>Skriv in något i rutan nedan och klicka på "Exempeltext"-knappen för att få det uppläst. Du kan ändra röst i
-        listan.</p>
-
+    
     <!-- <form> -->
-    <div class="form">
+        <div class="form">
+        <button id="settingsbutton" onclick="togglesettings()"><i class="fas fa-cog"></i></button>
+        <h1>Bengts multiplikationstest</h1>
 
-
-        <div>
-            <button onclick="speak(document.getElementById('exempeltext').value)"><i
-                    class="fas fa-bullhorn"></i></button>
-            <input type="text" class="txt" id="exempeltext">
-        </div>
-        <div>
-            <label for="rate"><i class="fas fa-running"></i></label>
-            <input type="range" min="0.5" max="2" value="1" step="0.1" id="rate">
-            <div class="rate-value">1</div>
-            <div class="clearfix"></div>
-        </div>
-        <div>
-            <label for="pitch"><i class="fab fa-think-peaks"></i></label>
-            <input type="range" min="0" max="2" value="1" step="0.1" id="pitch">
-            <div class="pitch-value">1</div>
-            <div class="clearfix"></div>
-        </div>
-        <div>
-            <select></select>
+        <div id="settings" hidden>
+            <p>Skriv in något i rutan nedan och klicka på "Exempeltext"-knappen för att få det uppläst. Du kan ändra
+                röst i
+                listan.</p>
+            <div>
+                <button onclick="speak(document.getElementById('exempeltext').value)"><i
+                        class="fas fa-bullhorn"></i></button>
+                <input type="text" class="txt" id="exempeltext">
+            </div>
+            <div>
+                <label for="rate"><i class="fas fa-running"></i></label>
+                <input type="range" min="0.5" max="2" value="1" step="0.1" id="rate">
+                <div class="rate-value">1</div>
+                <div class="clearfix"></div>
+            </div>
+            <div>
+                <label for="pitch"><i class="fab fa-think-peaks"></i></label>
+                <input type="range" min="0" max="2" value="1" step="0.1" id="pitch">
+                <div class="pitch-value">1</div>
+                <div class="clearfix"></div>
+            </div>
+            <div>
+                <select></select>
+            </div>
         </div>
         <div class="matteoptions">
 
@@ -244,6 +251,8 @@
         var startInterval
         var fraga = 0
         var lang = "sv"
+
+        var hidesettings = null
 
 
         function getRandomIntInclusive(min, max) {
@@ -329,6 +338,16 @@
             sound = onoff;
             let soundid = onoff ? 'lt' : 'lf'
             setActive(soundid, 'ljud')
+        }
+
+        function togglesettings() {
+            hidesettings = hidesettings === null? false: !hidesettings;
+            document.getElementById('settings').hidden = hidesettings;
+            if(hidesettings){
+                document.getElementById('settingsbutton').classList.remove('active');
+            }else{
+                document.getElementById('settingsbutton').classList.add('active');
+            }
         }
 
         function starttest() {
