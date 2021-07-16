@@ -421,11 +421,13 @@
         }
 
         function starttest() {
-            deleteAllRows()
-            runningtest = true
-            fraga = 0
-            populateTimeoutQuestionAnswer()
-            setActive('start', 'startstop')
+            if(!runningtest){
+                deleteAllRows()
+                runningtest = true
+                fraga = 0
+                populateTimeoutQuestionAnswer()
+                setActive('start', 'startstop')
+            }
         }
 
         function populateOneTimeoutQuestionAnswer() {
