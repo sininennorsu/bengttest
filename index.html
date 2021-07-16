@@ -303,7 +303,7 @@
 
         var sound = false
         var startInterval
-        var runningtest = false
+        var runningtest = -1 // -1 ej satt, 0 stoppad, 1 runningtest
         var fraga = 0
         var lang = "sv"
 
@@ -358,39 +358,41 @@
         }
 
         function showAnswer() {
-            doctal1uttal = document.getElementById('tal1').innerText
-            doctal2uttal = document.getElementById('tal2').innerText
-            doctal1 = parseInt(doctal1uttal)
-            doctal2 = parseInt(doctal2uttal)
-            switch (document.getElementById('raknesatt').innerText) {
-                case '+':
-                    result = doctal1 + doctal2
-                    // raknesattuttal = 'plus'
-                    break;
-                case '-':
-                    result = doctal1 - doctal2
-                    // raknesattuttal = 'minus'
-                    break;
-                case 'x':
-                    result = doctal1 * doctal2
-                    // raknesattuttal = 'gånger'
-                    break;
-                case '/':
-                    result = doctal1 / doctal2
-                    // raknesattuttal = 'delat med'
-                    break;
-                default:
-                    result = doctal1 + doctal2
-            }
-            document.getElementById('resultat').innerHTML = result
-            let svar = `${doctal1} ${document.getElementById('raknesatt').innerText} ${doctal2} = ${result}`
-            if(fraga > 0){
-                addRow(fraga,svar,false)
-            }
-
-            if (sound) {
-                resultatmening = `${doctal1uttal}  ${getWordInLanguage("raknesatt")} ${doctal2uttal} ${getWordInLanguage("likamed")} ${result.toString()}`
-                speak(resultatmening)
+            if(runningtest !== 0){ //om ej stoppad
+                doctal1uttal = document.getElementById('tal1').innerText
+                doctal2uttal = document.getElementById('tal2').innerText
+                doctal1 = parseInt(doctal1uttal)
+                doctal2 = parseInt(doctal2uttal)
+                switch (document.getElementById('raknesatt').innerText) {
+                    case '+':
+                        result = doctal1 + doctal2
+                        // raknesattuttal = 'plus'
+                        break;
+                    case '-':
+                        result = doctal1 - doctal2
+                        // raknesattuttal = 'minus'
+                        break;
+                    case 'x':
+                        result = doctal1 * doctal2
+                        // raknesattuttal = 'gånger'
+                        break;
+                    case '/':
+                        result = doctal1 / doctal2
+                        // raknesattuttal = 'delat med'
+                        break;
+                    default:
+                        result = doctal1 + doctal2
+                }
+                document.getElementById('resultat').innerHTML = result
+                let svar = `${doctal1} ${document.getElementById('raknesatt').innerText} ${doctal2} = ${result}`
+                if(fraga > 0){
+                    addRow(fraga,svar,false)
+                }
+    
+                if (sound) {
+                    resultatmening = `${doctal1uttal}  ${getWordInLanguage("raknesatt")} ${doctal2uttal} ${getWordInLanguage("likamed")} ${result.toString()}`
+                    speak(resultatmening)
+                }
             }
         }
 
@@ -421,9 +423,9 @@
         }
 
         function starttest() {
-            if(!runningtest){
+            if(runningtest !== 1){
                 deleteAllRows()
-                runningtest = true
+                runningtest = 1
                 fraga = 0
                 populateTimeoutQuestionAnswer()
                 setActive('start', 'startstop')
@@ -431,14 +433,14 @@
         }
 
         function populateOneTimeoutQuestionAnswer() {
-            if (runningtest) {
+            
                 fraga = fraga + 1
 
                 document.getElementById('fraga').innerHTML = `Fråga ${fraga}:`
                 visasvarefter = (document.getElementById('sekunder').value - 4) * 1000
                 populateNumbers()
                 setTimeout(showAnswer, visasvarefter)
-            }
+            
         }
 
         function populateTimeoutQuestionAnswer() {
@@ -448,7 +450,7 @@
         }
 
         function stop() {
-            runningtest = false
+            runningtest = 0
             clearInterval(startInterval)
             startInterval = null
             setActive('stopp', 'startstop')
