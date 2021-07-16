@@ -44,7 +44,7 @@
             width: 73%;
         }
 
-        #settingsbutton {
+        .togglebutton {
             float: right;
             margin-right: 10px;
         }
@@ -142,6 +142,15 @@
             border-collapse: collapse;
         }
 
+        #answercontainer {
+            padding-top: 20px;
+            margin: 30px;
+        }
+
+        #labelfraga {
+            width: 20%;
+        }
+
         table,
         th,
         td {
@@ -191,7 +200,8 @@
 
     <!-- <form> -->
     <div class="form">
-        <button id="settingsbutton" onclick="togglesettings()"><i class="fas fa-cog"></i></button>
+        <button id="answerbutton" class="togglebutton" onclick="toggleanswers()"><i class="fas fa-check"></i></button>
+        <button id="settingsbutton" class="togglebutton" onclick="togglesettings()"><i class="fas fa-cog"></i></button>
         <h1>Bengts multiplikationstest</h1>
 
         <div id="settings" hidden>
@@ -255,19 +265,19 @@
         </div>
     </div>
 
-    <div class="answercontainer">
-        <table class="answertable">
+    
+
+    <div id="answercontainer" hidden>
+        <table id="answertable">
             <tr>
                 <th id="labelfraga">Fråga</th>
                 <th>Svar</th>
             </tr>
-            <tr>
-                <td>1</td>
-                <td>1+2=3</td>
-            </tr>
+
 
         </table>
     </div>
+
 
     <script>
         var synth = window.speechSynthesis;
@@ -298,6 +308,7 @@
         var lang = "sv"
 
         var hidesettings = null
+        var hideanswers = null
 
 
         function getRandomIntInclusive(min, max) {
@@ -372,6 +383,10 @@
                     result = doctal1 + doctal2
             }
             document.getElementById('resultat').innerHTML = result
+            let svar = `${doctal1} ${document.getElementById('raknesatt').innerText} ${doctal2} = ${result}`
+            if(fraga > 0){
+                addRow(fraga,svar,false)
+            }
 
             if (sound) {
                 resultatmening = `${doctal1uttal}  ${getWordInLanguage("raknesatt")} ${doctal2uttal} ${getWordInLanguage("likamed")} ${result.toString()}`
@@ -395,7 +410,18 @@
             }
         }
 
+        function toggleanswers() {
+            hideanswers = hideanswers === null ? false : !hideanswers;
+            document.getElementById('answercontainer').hidden = hideanswers;
+            if (hideanswers) {
+                document.getElementById('answerbutton').classList.remove('active');
+            } else {
+                document.getElementById('answerbutton').classList.add('active');
+            }
+        }
+
         function starttest() {
+            deleteAllRows()
             runningtest = true
             fraga = 0
             populateTimeoutQuestionAnswer()
@@ -427,6 +453,7 @@
         }
 
         function chooseNumeracy(choosennumeracy) {
+            fraga = 0
             numeracy = choosennumeracy
             populateNumbers()
             let numeracyid = 'n' + choosennumeracy
@@ -627,6 +654,30 @@
             lang = voiceSelect[voiceSelect.selectedIndex].getAttribute('data-lang').substring(0, 2)
         }
 
+        function addRow(fraga,svar,top = false) {
+            // (B1) GET TABLE
+            var table = document.getElementById("answertable");
+
+            // (B2) INSERT ROW
+            if (top) { var row = table.insertRow(0); }
+            else { var row = table.insertRow(); }
+
+            // (B3) INSERT CELLS
+            var cell = row.insertCell();
+            cell.innerHTML = fraga;
+            cell = row.insertCell();
+            cell.innerHTML = svar;
+        }
+
+        function deleteAllRows() {
+            var table = document.getElementById("answertable");
+            let rows = table.rows
+            for (let row of table.rows) { 
+                if(row.rowIndex > 0){
+                    table.deleteRow(row.rowIndex) 
+                }
+            }
+        }
 
     </script>
 </body>
