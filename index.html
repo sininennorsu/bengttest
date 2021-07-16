@@ -45,7 +45,7 @@
         }
 
         #settingsbutton {
-            float:right;
+            float: right;
             margin-right: 10px;
         }
 
@@ -137,6 +137,36 @@
             margin: auto;
         }
 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            text-align: center;
+        }
+
+        thead {
+            background-color: #1c87c9;
+            color: #ffffff;
+        }
+
+        th {
+            text-align: center;
+            height: 50px;
+        }
+
+        tbody tr:nth-child(odd) {
+            background: #ffffff;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f4f4f4;
+        }
+
         @media only screen and (max-width: 780px) {
             .test>span {
                 font-size: 72px;
@@ -158,9 +188,9 @@
 </head>
 
 <body>
-    
+
     <!-- <form> -->
-        <div class="form">
+    <div class="form">
         <button id="settingsbutton" onclick="togglesettings()"><i class="fas fa-cog"></i></button>
         <h1>Bengts multiplikationstest</h1>
 
@@ -225,6 +255,20 @@
         </div>
     </div>
 
+    <div class="answercontainer">
+        <table class="answertable">
+            <tr>
+                <th id="labelfraga">Fråga</th>
+                <th>Svar</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>1+2=3</td>
+            </tr>
+
+        </table>
+    </div>
+
     <script>
         var synth = window.speechSynthesis;
 
@@ -249,6 +293,7 @@
 
         var sound = false
         var startInterval
+        var runningtest = false
         var fraga = 0
         var lang = "sv"
 
@@ -341,28 +386,31 @@
         }
 
         function togglesettings() {
-            hidesettings = hidesettings === null? false: !hidesettings;
+            hidesettings = hidesettings === null ? false : !hidesettings;
             document.getElementById('settings').hidden = hidesettings;
-            if(hidesettings){
+            if (hidesettings) {
                 document.getElementById('settingsbutton').classList.remove('active');
-            }else{
+            } else {
                 document.getElementById('settingsbutton').classList.add('active');
             }
         }
 
         function starttest() {
+            runningtest = true
             fraga = 0
             populateTimeoutQuestionAnswer()
             setActive('start', 'startstop')
         }
 
         function populateOneTimeoutQuestionAnswer() {
-            fraga = fraga + 1
+            if (runningtest) {
+                fraga = fraga + 1
 
-            document.getElementById('fraga').innerHTML = `Fråga ${fraga}:`
-            visasvarefter = (document.getElementById('sekunder').value - 4) * 1000
-            populateNumbers()
-            setTimeout(showAnswer, visasvarefter)
+                document.getElementById('fraga').innerHTML = `Fråga ${fraga}:`
+                visasvarefter = (document.getElementById('sekunder').value - 4) * 1000
+                populateNumbers()
+                setTimeout(showAnswer, visasvarefter)
+            }
         }
 
         function populateTimeoutQuestionAnswer() {
@@ -372,6 +420,7 @@
         }
 
         function stop() {
+            runningtest = false
             clearInterval(startInterval)
             startInterval = null
             setActive('stopp', 'startstop')
