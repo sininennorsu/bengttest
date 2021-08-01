@@ -93,10 +93,13 @@
 
         button {
             padding: 6px;
+            border: 1px solid darkgray;
+            box-shadow: 1px 2px 2px 0px rgba(89,87,87,0.85);
         }
 
         .active {
             background-color: darkgrey;
+            box-shadow: unset;
         }
 
         .btn-group button {
@@ -196,6 +199,11 @@
             .btn-group button {
                 padding: 7px 20px;
             }
+
+            .btn-group button:not(:last-child) {
+            border-right: unset !important;
+            /* Prevent double borders */
+        }
         }
     </style>
 </head>
