@@ -126,6 +126,10 @@
             /* Prevent double borders */
         }
 
+        .settingsinput {
+            margin-bottom: 5px;
+        }
+
         .test>span {
             font-size: 125px;
             padding: 10px;
@@ -205,9 +209,10 @@
         <h1>Bengts multiplikationstest</h1>
 
         <div id="settings" hidden>
-            <p>Skriv in något i rutan nedan och klicka på "Exempeltext"-knappen för att få det uppläst. Du kan ändra
-                röst i
-                listan.</p>
+            <h3>Ljudinställningar</h3>
+            <div class="settingsinput">Skriv in något i rutan nedan och klicka på "Megafon"-knappen 
+                för att få det uppläst. Du kan ändra röst i listan.
+            </div>
             <div>
                 <button onclick="speak(document.getElementById('exempeltext').value)"><i
                         class="fas fa-bullhorn"></i></button>
@@ -227,6 +232,111 @@
             </div>
             <div>
                 <select></select>
+            </div>
+
+            <div>
+                <h3>Addition</h3>
+                <h4>Term 1 (tal 1) min och max</h4>
+                <div>
+                    <div>
+                        <label for="plustal1min">min</label>
+                        <input type="number" class="settingsinput" value="1" id="plustal1min">
+                    </div>
+                    <div>
+                        <label for="plustal1max">max</label>
+                        <input type="number" class="settingsinput" value="80" id="plustal1max">
+                    </div>
+                </div>
+                <h4>Term 2 (tal 2) min och max</h4>
+                <div>
+                    <div>
+                        <label for="plustal2min">min</label>
+                        <input type="number" class="settingsinput" value="1S" id="plustal2min">
+                    </div>
+                    <div>
+                        <label for="plustal2max">max</label>
+                        <input type="number" class="settingsinput" value="10" id="plustal2max">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3>Subtraktion</h3>
+                <h4>Term 1 (tal 1) min och max</h4>
+                <div>
+                    <div>
+                        <label for="minustal1min">min</label>
+                        <input type="number" class="settingsinput" value="10" id="minustal1min">
+                    </div>
+                    <div>
+                        <label for="minustal1max">max</label>
+                        <input type="number" class="settingsinput" value="100" id="minustal1max">
+                    </div>
+                </div>
+                <h4>Term 2 (tal 2) min och max</h4>
+                <div>
+                    <div>
+                        <label for="minustal2min">min</label>
+                        <input type="number" class="settingsinput" value="1" id="minustal2min">
+                    </div>
+                    <div>
+                        <label for="minustal2max">max</label>
+                        <input type="number" class="settingsinput" value="10" id="minustal2max">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3>Multiplikaiton</h3>
+                <h4>Faktor 1 (tal 1) min och max</h4>
+                <div>
+                    <div>
+                        <label for="multital1min">min</label>
+                        <input type="number" class="settingsinput" value="2" id="multital1min">
+                    </div>
+                    <div>
+                        <label for="multital1max">max</label>
+                        <input type="number" class="settingsinput" value="9" id="multital1max">
+                    </div>
+                </div>
+                <h4>Faktor 2 (tal 2) min och max</h4>
+                <div>
+                    <div>
+                        <label for="multital2min">min</label>
+                        <input type="number" class="settingsinput" value="2" id="multital2min">
+                    </div>
+                    <div>
+                        <label for="multital2max">max</label>
+                        <input type="number" class="settingsinput" value="9" id="multital2max">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3>Division</h3>
+                <span>Täljaren (tal 1) räknas ut genom Nämnare x Kvot</span>
+                <h4>Nämnare (tal 2) min och max</h4>
+                <div>
+                    <div>
+                        <label for="divtal1min">min</label>
+                        <input type="number" class="settingsinput" value="1" id="divtal1min">
+                    </div>
+                    <div>
+                        <label for="divtal1max">max</label>
+                        <input type="number" class="settingsinput" value="10" id="divtal1max">
+                    </div>
+                </div>
+                <h4>Kvot (svaret) min och max</h4>
+                <div>
+                    <div>
+                        <label for="divtal2min">min</label>
+                        <input type="number" class="settingsinput" value="1" id="divtal2min">
+                    </div>
+                    <div>
+                        <label for="divtal2max">max</label>
+                        <input type="number" class="settingsinput" value="10" id="divtal2max">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="matteoptions">
@@ -265,7 +375,7 @@
         </div>
     </div>
 
-    
+
 
     <div id="answercontainer" hidden>
         <table id="answertable">
@@ -322,23 +432,32 @@
             currentnumeracy = populateraknesatt
             switch (populateraknesatt) {
                 case 0:
-                    tal1 = getRandomIntInclusive(2, 80)
-                    tal2 = getRandomIntInclusive(2, 20)
+                    tal1 = getRandomIntInclusive(document.getElementById('plustal1min').value, document.getElementById('plustal1max').value)
+                    tal2 = getRandomIntInclusive(document.getElementById('plustal2min').value, document.getElementById('plustal2max').value)
                     // raknesattuttal = 'plus'
                     break;
                 case 1:
-                    tal1 = getRandomIntInclusive(21, 100)
-                    tal2 = getRandomIntInclusive(1, 20)
+                    tal1 = getRandomIntInclusive(document.getElementById('minustal1min').value, document.getElementById('minustal1max').value)
+                    tal2 = getRandomIntInclusive(document.getElementById('minustal2min').value, document.getElementById('minustal2max').value)
+                    // tal1 = getRandomIntInclusive(21, 100)
+                    // tal2 = getRandomIntInclusive(1, 20)
                     // raknesattuttal = 'minus'
                     break;
                 case 2:
-                    tal1 = getRandomIntInclusive(3, 9)
-                    tal2 = getRandomIntInclusive(3, 9)
+                    tal1 = getRandomIntInclusive(document.getElementById('multital1min').value, document.getElementById('multital1max').value)
+                    tal2 = getRandomIntInclusive(document.getElementById('multital2min').value, document.getElementById('multital2max').value)
+
+                    // tal1 = getRandomIntInclusive(3, 9)
+                    // tal2 = getRandomIntInclusive(3, 9)
                     // raknesattuttal = 'gånger'
                     break;
                 case 3:
-                    divtal = getRandomIntInclusive(3, 9)
-                    tal1 = divtal * getRandomIntInclusive(3, 9)
+                    // divtal = getRandomIntInclusive(3, 9)
+                    // tal1 = divtal * getRandomIntInclusive(3, 9)
+                    // tal2 = divtal
+                    divtal = getRandomIntInclusive(document.getElementById('divtal1min').value, document.getElementById('divtal1max').value)
+                    divtal2 = getRandomIntInclusive(document.getElementById('divtal2min').value, document.getElementById('divtal2max').value)
+                    tal1 = divtal * divtal2
                     tal2 = divtal
                     // raknesattuttal = 'delatmed'
                     break;
@@ -358,7 +477,7 @@
         }
 
         function showAnswer() {
-            if(runningtest !== 0){ //om ej stoppad
+            if (runningtest !== 0) { //om ej stoppad
                 doctal1uttal = document.getElementById('tal1').innerText
                 doctal2uttal = document.getElementById('tal2').innerText
                 doctal1 = parseInt(doctal1uttal)
@@ -385,10 +504,10 @@
                 }
                 document.getElementById('resultat').innerHTML = result
                 let svar = `${doctal1} ${document.getElementById('raknesatt').innerText} ${doctal2} = ${result}`
-                if(fraga > 0){
-                    addRow(fraga,svar,false)
+                if (fraga > 0) {
+                    addRow(fraga, svar, false)
                 }
-    
+
                 if (sound) {
                     resultatmening = `${doctal1uttal}  ${getWordInLanguage("raknesatt")} ${doctal2uttal} ${getWordInLanguage("likamed")} ${result.toString()}`
                     speak(resultatmening)
@@ -423,7 +542,7 @@
         }
 
         function starttest() {
-            if(runningtest !== 1){
+            if (runningtest !== 1) {
                 deleteAllRows()
                 runningtest = 1
                 fraga = 0
@@ -433,14 +552,14 @@
         }
 
         function populateOneTimeoutQuestionAnswer() {
-            
-                fraga = fraga + 1
 
-                document.getElementById('fraga').innerHTML = `Fråga ${fraga}:`
-                visasvarefter = (document.getElementById('sekunder').value - 4) * 1000
-                populateNumbers()
-                setTimeout(showAnswer, visasvarefter)
-            
+            fraga = fraga + 1
+
+            document.getElementById('fraga').innerHTML = `Fråga ${fraga}:`
+            visasvarefter = (document.getElementById('sekunder').value - 4) * 1000
+            populateNumbers()
+            setTimeout(showAnswer, visasvarefter)
+
         }
 
         function populateTimeoutQuestionAnswer() {
@@ -658,7 +777,7 @@
             lang = voiceSelect[voiceSelect.selectedIndex].getAttribute('data-lang').substring(0, 2)
         }
 
-        function addRow(fraga,svar,top = false) {
+        function addRow(fraga, svar, top = false) {
             // (B1) GET TABLE
             var table = document.getElementById("answertable");
 
@@ -676,9 +795,9 @@
         function deleteAllRows() {
             var table = document.getElementById("answertable");
             let rows = table.rows
-            for (let row of table.rows) { 
-                if(row.rowIndex > 0){
-                    table.deleteRow(row.rowIndex) 
+            for (let row of table.rows) {
+                if (row.rowIndex > 0) {
+                    table.deleteRow(row.rowIndex)
                 }
             }
         }
