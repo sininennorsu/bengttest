@@ -94,7 +94,7 @@
         button {
             padding: 6px;
             border: 1px solid darkgray;
-            box-shadow: 1px 2px 2px 0px rgba(89,87,87,0.85);
+            box-shadow: 1px 2px 2px 0px rgba(89, 87, 87, 0.85);
             border-radius: 10%;
         }
 
@@ -134,9 +134,29 @@
             margin-bottom: 5px;
         }
 
-        .test>span {
-            font-size: 125px;
-            padding: 10px;
+        /* #division {
+            display: none;
+        } */
+
+        .sum {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .fraction {
+            display: table-cell;
+            text-align: center;
+        }
+
+        .denominator {
+            border-top: 1px solid #000;
+            display: block;
+        }
+
+        .fraction,
+        .numerator,
+        .denominator {
+            padding: 0px 5px;
         }
 
         .testcontainer>div {
@@ -184,8 +204,12 @@
             background: #f4f4f4;
         }
 
-        @media only screen and (max-width: 780px) {
+        @media only screen and (min-width: 481px) {
             .test>span {
+                font-size: 72px;
+                padding: 10px;
+            }
+            .division>span {
                 font-size: 72px;
                 padding: 10px;
             }
@@ -202,9 +226,9 @@
             }
 
             .btn-group button:not(:last-child) {
-            border-right: unset !important;
-            /* Prevent double borders */
-        }
+                border-right: unset !important;
+                /* Prevent double borders */
+            }
         }
     </style>
 </head>
@@ -219,7 +243,7 @@
 
         <div id="settings" hidden>
             <h3>Ljudinställningar</h3>
-            <div class="settingsinput">Skriv in något i rutan nedan och klicka på "Megafon"-knappen 
+            <div class="settingsinput">Skriv in något i rutan nedan och klicka på "Megafon"-knappen
                 för att få det uppläst. Du kan ändra röst i listan.
             </div>
             <div>
@@ -378,9 +402,14 @@
 
     <div class="testcontainer">
         <div id="fraga"></div>
-        <div class="test">
-            <span id="tal1">1</span><span id="raknesatt">+</span><span id="tal2">2</span><span>=</span><span
+        <div class="test" id="test">
+            <span class="tal1" id="tal1">1</span><span class="raknesatt" id="raknesatt">+</span><span class="tal2"
+                id="tal2">2</span><span class="likamed" id="likamed">=</span><span class="resultat"
                 id="resultat">3</span>
+        </div>
+        <div class="division" id="division" style="display:none;"><span class="fraction"><span
+                    class="numerator tal1">n234</span><span class="denominator tal2">43242m</span></span>
+            <span class="sum likamed">=</span><span class="sum resultat"></span>
         </div>
     </div>
 
@@ -441,11 +470,15 @@
             currentnumeracy = populateraknesatt
             switch (populateraknesatt) {
                 case 0:
+                    document.getElementById('test').style.display = "";
+                    document.getElementById('division').style.display = "none";
                     tal1 = getRandomIntInclusive(document.getElementById('plustal1min').value, document.getElementById('plustal1max').value)
                     tal2 = getRandomIntInclusive(document.getElementById('plustal2min').value, document.getElementById('plustal2max').value)
                     // raknesattuttal = 'plus'
                     break;
                 case 1:
+                    document.getElementById('test').style.display = "";
+                    document.getElementById('division').style.display = "none";
                     tal1 = getRandomIntInclusive(document.getElementById('minustal1min').value, document.getElementById('minustal1max').value)
                     tal2 = getRandomIntInclusive(document.getElementById('minustal2min').value, document.getElementById('minustal2max').value)
                     // tal1 = getRandomIntInclusive(21, 100)
@@ -453,6 +486,8 @@
                     // raknesattuttal = 'minus'
                     break;
                 case 2:
+                    document.getElementById('test').style.display = "";
+                    document.getElementById('division').style.display = "none";
                     tal1 = getRandomIntInclusive(document.getElementById('multital1min').value, document.getElementById('multital1max').value)
                     tal2 = getRandomIntInclusive(document.getElementById('multital2min').value, document.getElementById('multital2max').value)
 
@@ -461,6 +496,8 @@
                     // raknesattuttal = 'gånger'
                     break;
                 case 3:
+                    document.getElementById('test').style.display = "none";
+                    document.getElementById('division').style.display = "";
                     // divtal = getRandomIntInclusive(3, 9)
                     // tal1 = divtal * getRandomIntInclusive(3, 9)
                     // tal2 = divtal
@@ -474,10 +511,19 @@
 
             document.getElementById('raknesatt').innerHTML = numeracyshowarray[populateraknesatt]
 
-            document.getElementById('resultat').innerHTML = ''
+            // document.getElementById('resultat').innerHTML = ''
+            for (i in document.getElementsByClassName('resultat')) {
+                    document.getElementsByClassName('resultat')[i].innerHTML = '';
+                }
 
-            document.getElementById('tal1').innerHTML = tal1
-            document.getElementById('tal2').innerHTML = tal2
+            for (i in document.getElementsByClassName('tal1')) {
+                document.getElementsByClassName('tal1')[i].innerHTML = tal1;
+            }
+            for (i in document.getElementsByClassName('tal2')) {
+                document.getElementsByClassName('tal2')[i].innerHTML = tal2;
+            }
+            // document.getElementsByClassName('tal1').innerHTML = tal1
+            // document.getElementsByClassName('tal2').innerHTML = tal2
 
             if (sound) {
                 fragemening = `${tal1}  ${getWordInLanguage("raknesatt")} ${tal2}`
@@ -487,8 +533,10 @@
 
         function showAnswer() {
             if (runningtest !== 0) { //om ej stoppad
-                doctal1uttal = document.getElementById('tal1').innerText
-                doctal2uttal = document.getElementById('tal2').innerText
+                // doctal1uttal = document.getElementById('tal1').innerText
+                // doctal2uttal = document.getElementById('tal2').innerText
+                doctal1uttal = document.getElementsByClassName('tal1')[0].innerText
+                doctal2uttal = document.getElementsByClassName('tal2')[0].innerText
                 doctal1 = parseInt(doctal1uttal)
                 doctal2 = parseInt(doctal2uttal)
                 switch (document.getElementById('raknesatt').innerText) {
@@ -511,7 +559,10 @@
                     default:
                         result = doctal1 + doctal2
                 }
-                document.getElementById('resultat').innerHTML = result
+                for (i in document.getElementsByClassName('resultat')) {
+                    document.getElementsByClassName('resultat')[i].innerHTML = result;
+                }
+                // document.getElementById('resultat').innerHTML = result
                 let svar = `${doctal1} ${document.getElementById('raknesatt').innerText} ${doctal2} = ${result}`
                 if (fraga > 0) {
                     addRow(fraga, svar, false)
@@ -563,7 +614,7 @@
         function populateOneTimeoutQuestionAnswer() {
 
             fraga = fraga + 1
-
+            document.getElementById('fraga').style.display ='';
             document.getElementById('fraga').innerHTML = `Fråga ${fraga}:`
             visasvarefter = (document.getElementById('sekunder').value - 4) * 1000
             populateNumbers()
@@ -585,6 +636,8 @@
         }
 
         function chooseNumeracy(choosennumeracy) {
+            document.getElementById('fraga').style.display ='none';
+            runningtest = -1
             fraga = 0
             numeracy = choosennumeracy
             populateNumbers()
